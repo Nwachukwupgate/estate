@@ -22,7 +22,23 @@ const CreateProject = () => {
         title: "",
         type: '',
         image: null,
-        body: ""
+        image2: null,
+        image3: null,
+        image4: null,
+        slide: null,
+        slide2: null,
+        slide3: null,
+        slide4: null,
+        body: "",
+        extraText: "",
+        specify: "",
+        specify2: "",
+        specify3: "",
+        specify4: "",
+        benefit: "",
+        benefit2: "",
+        benefit3: "",
+        benefit4: "",
     })
 
     const handleChange = (e) => {
@@ -34,13 +50,13 @@ const CreateProject = () => {
         }));
     };
 
-    const handleUpload = (e) => {
+    const handleUpload = (e, fieldName) => {
         const imgs = ref(imgDb, `imgs/${v4()}`);
         uploadBytes(imgs, e.target.files[0]).then(data => {
             getDownloadURL(data.ref).then(val => {
                 setInputField(prevInputField => ({
                     ...prevInputField,
-                    image: val
+                    [fieldName]: val
                 }));                
             })
         })
@@ -51,7 +67,7 @@ const CreateProject = () => {
         console.log(inputField);
         try{
             await addDoc(projectCollection, inputField)
-            navigate('/');
+            // navigate('/');
         } catch {
             console.log("error");
         }
@@ -64,8 +80,28 @@ const CreateProject = () => {
             <div>
                 <Input type="text" handleChange={handleChange} title="Name" placeholder="Project/Architecture Name" autocomplete='true' value={inputField.title} name="title"/>
                 <CustomSelect data={data} handleChange={handleChange} title="Choose Type" value={inputField.type} name="type" />
-                <CustomFileInput title="Select Image" selectedFile={inputField.image} handleChange={handleUpload} name="image"/>
+                <CustomFileInput title="Select Image" selectedFile={inputField.image} handleChange={(e) =>handleUpload(e, "image")}name="image"/>
+                <CustomFileInput title="Select Image 2" selectedFile={inputField.image2} handleChange={(e) =>handleUpload(e, "image2")} name="image2"/>
+                <CustomFileInput title="Select Image 3" selectedFile={inputField.image3} handleChange={(e) =>handleUpload(e, "image3")} name="image3"/>
+                <CustomFileInput title="Select Image 4" selectedFile={inputField.image4} handleChange={(e) =>handleUpload(e, "image4")} name="image4"/>
+                <br/> <br /> <br/>
+                <CustomFileInput title="Slide Image 1" selectedFile={inputField.slide} handleChange={(e) =>handleUpload(e, "slide")} name="slide"/>
+                <CustomFileInput title="Slide Image 2" selectedFile={inputField.slide2} handleChange={(e) =>handleUpload(e, "slide2")} name="slide2"/>
+                <CustomFileInput title="Slide Image 3" selectedFile={inputField.slide3} handleChange={(e) =>handleUpload(e, "slide3")} name="slide3"/>
+                <CustomFileInput title="Slide Image 4" selectedFile={inputField.slide4} handleChange={(e) =>handleUpload(e, "slide4")} name="slide4"/>
                 <CustomTextArea name="body" title="Description"  placeholder="Describe Project/Architecture" handleChange={handleChange} value={inputField.body}/>
+
+                <CustomTextArea handleChange={handleChange} title="Additional Description" placeholder="Describtion" value={inputField.extraText} name="extraText"/>
+
+                <Input type="text" handleChange={handleChange} title="Specification" placeholder="Insert Specification" autocomplete='true' value={inputField.specify} name="specify"/>
+                <Input type="text" handleChange={handleChange} title="Specification 2" placeholder="Insert Specification" autocomplete='true' value={inputField.specify2} name="specify2"/>
+                <Input type="text" handleChange={handleChange} title="Specification 3" placeholder="Insert Specification" autocomplete='true' value={inputField.specify3} name="specify3"/>
+                <Input type="text" handleChange={handleChange} title="Specification 4" placeholder="Insert Specification" autocomplete='true' value={inputField.specify4} name="specify4"/>
+
+                <Input type="text" handleChange={handleChange} title="Benefit" placeholder="Insert Benefit" autocomplete='true' value={inputField.benefit} name="benefit"/>
+                <Input type="text" handleChange={handleChange} title="Benefit 2" placeholder="Insert Benefit" autocomplete='true' value={inputField.benefit2} name="benefit2"/>
+                <Input type="text" handleChange={handleChange} title="Benefit 3" placeholder="Insert Benefit" autocomplete='true' value={inputField.benefit3} name="benefit3"/>
+                <Input type="text" handleChange={handleChange} title="Benefit 4" placeholder="Insert Specification" autocomplete='true' value={inputField.benefit4} name="benefit4"/>
                 {/* <Button label="Submit" colour="blue" color="white" onClick={handleSubmit}/> */}
                 <button className={`  px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue300 focus:ring-opacity-80`} onClick={(e) => handleSubmit(e)}>
                     Submit
