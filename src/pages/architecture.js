@@ -10,6 +10,7 @@ const CreateArchitecture = () => {
   const [selectedTitle, setSelectedTitle] = useState('');
   const [images, setImages] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
   const projectCollection = collection(db, "estate")
   const architectureCollection = collection(db, "architecture")
 
@@ -41,28 +42,38 @@ const CreateArchitecture = () => {
     };
 
     const handleImageUpload = async () => {
-      const storageRef = ref(imgDb, `${selectedTitle}/`);
-    
-      // Iterate over each selected image file
-      for (const file of imageFiles) {
-        // Create a child reference for the current image file in the Storage
-        const imageRef = ref(storageRef, file.name);
+      setLoading(true);
+      try {
+        const storageRef = ref(imgDb, `${selectedTitle}/`);
+      
+        // Iterate over each selected image file
+        for (const file of imageFiles) {
+          // Create a child reference for the current image file in the Storage
+          const imageRef = ref(storageRef, file.name);
 
-        // Upload the image file to Firebase Storage
-        await uploadBytes(imageRef, file);
+          // Upload the image file to Firebase Storage
+          await uploadBytes(imageRef, file);
 
-        // Get the download URL of the uploaded image
-        const imageUrl = await getDownloadURL(imageRef);
-    
-        // Add information about the uploaded image to the 'images' collection in Firestore
-        await addDoc(architectureCollection, {
-          title: selectedTitle,
-          image: imageUrl,
-        });
+          // Get the download URL of the uploaded image
+          const imageUrl = await getDownloadURL(imageRef);
+      
+          // Add information about the uploaded image to the 'images' collection in Firestore
+          await addDoc(architectureCollection, {
+            title: selectedTitle,
+            image: imageUrl,
+          });
+        }
+      
+        // Refresh the images after upload by fetching the updated list
+        handleTitleSelect(selectedTitle);
+      } catch (error) {
+        console.error("Error during image upload:", error);
+      } finally {
+        // Use setTimeout to delay setting loading to false by 30 seconds
+        setTimeout(() => {
+          setLoading(false);
+        }, 30000); // 30,000 milliseconds = 30 seconds
       }
-    
-      // Refresh the images after upload by fetching the updated list
-      handleTitleSelect(selectedTitle);
     };
     
     console.log("titles", titles);
@@ -91,7 +102,7 @@ const CreateArchitecture = () => {
               </div>
               <div className="mt-4">
               {/* <button onClick={handleImageUpload}>Upload Images</button> */}
-                <Button label="Upload Images" colour="blue" color="gray-600" className="mt-4" onClick={handleImageUpload} />
+                <Button colour="blue" color="gray-600" className="mt-4" onClick={handleImageUpload} disabled={loading} label={loading ? "Loading..." : "Upload Images"}  />
               </div>
             </div>
           )}

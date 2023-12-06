@@ -18,6 +18,7 @@ const CreateProject = () => {
     let navigate = useNavigate();
     const data = [ "Project", "Architecture" ];
     const projectCollection = collection(db, "estate")
+    const [loading, setLoading] = useState(false);
     const [inputField, setInputField] = useState({
         title: "",
         type: '',
@@ -64,12 +65,15 @@ const CreateProject = () => {
 
     const handleSubmit =async (e) => {
         e.preventDefault();
-        console.log(inputField);
+        // console.log(inputField);
         try{
             await addDoc(projectCollection, inputField)
             // navigate('/');
         } catch {
             console.log("error");
+        } finally {
+            setLoading(false); // Set loading back to false whether the API call succeeds or fails
+            navigate('/');
         }
     }
   return (
@@ -103,8 +107,9 @@ const CreateProject = () => {
                 <Input type="text" handleChange={handleChange} title="Benefit 3" placeholder="Insert Benefit" autocomplete='true' value={inputField.benefit3} name="benefit3"/>
                 <Input type="text" handleChange={handleChange} title="Benefit 4" placeholder="Insert Specification" autocomplete='true' value={inputField.benefit4} name="benefit4"/>
                 {/* <Button label="Submit" colour="blue" color="white" onClick={handleSubmit}/> */}
-                <button className={`  px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue300 focus:ring-opacity-80`} onClick={(e) => handleSubmit(e)}>
-                    Submit
+                <button className={`  px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue300 focus:ring-opacity-80`} onClick={(e) => handleSubmit(e)}
+                disabled={loading}>
+                    {loading? "Loading..." : "Submit"} 
                 </button>
             </div>
         </div>
