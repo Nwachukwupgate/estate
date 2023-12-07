@@ -72,7 +72,7 @@ const CreateArchitecture = () => {
         // Use setTimeout to delay setting loading to false by 30 seconds
         setTimeout(() => {
           setLoading(false);
-        }, 30000); // 30,000 milliseconds = 30 seconds
+        }, 130000); // 30,000 milliseconds = 1min 30 seconds
       }
     };
     
