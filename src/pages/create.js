@@ -94,6 +94,8 @@ const CreateProject = () => {
             })
             }, 130000);
             // navigate('/');
+            // Show an alert to the user
+            window.alert('Submission successful!');
         } catch {
             console.log("error");
         } finally {
