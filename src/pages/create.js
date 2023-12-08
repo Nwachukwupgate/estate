@@ -68,10 +68,6 @@ const CreateProject = () => {
         // console.log(inputField);
         try{
             await addDoc(projectCollection, inputField)
-            // navigate('/');
-        } catch {
-            console.log("error");
-        } finally {
             setTimeout(() => {
                 setLoading(false);
                  setInputField({
@@ -96,9 +92,38 @@ const CreateProject = () => {
                 benefit3: "",
                 benefit4: "",
             })
-              }, 130000); // 30,000 milliseconds = 1min 30 seconds // Set loading back to false whether the API call succeeds or fails
+            }, 130000);
             // navigate('/');
-                
+        } catch {
+            console.log("error");
+        } finally {
+            // setTimeout(() => {
+            //     setLoading(false);
+            //      setInputField({
+            //     title: "",
+            //     type: '',
+            //     image: null,
+            //     image2: null,
+            //     image3: null,
+            //     image4: null,
+            //     slide: null,
+            //     slide2: null,
+            //     slide3: null,
+            //     slide4: null,
+            //     body: "",
+            //     extraText: "",
+            //     specify: "",
+            //     specify2: "",
+            //     specify3: "",
+            //     specify4: "",
+            //     benefit: "",
+            //     benefit2: "",
+            //     benefit3: "",
+            //     benefit4: "",
+            // })
+            //   }, 130000); // 30,000 milliseconds = 1min 30 seconds // Set loading back to false whether the API call succeeds or fails
+            // navigate('/');
+            console.log("done");
         }
     }
   return (

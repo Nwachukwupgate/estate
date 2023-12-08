@@ -66,14 +66,12 @@ const CreateArchitecture = () => {
       
         // Refresh the images after upload by fetching the updated list
         handleTitleSelect(selectedTitle);
-      } catch (error) {
-        console.error("Error during image upload:", error);
-      } finally {
-        // Use setTimeout to delay setting loading to false by 30 seconds
         setTimeout(() => {
           setLoading(false);
-        }, 130000); // 30,000 milliseconds = 1min 30 seconds
-      }
+        }, 130000); 
+      } catch (error) {
+        console.error("Error during image upload:", error);
+      } 
     };
     
     console.log("titles", titles);
